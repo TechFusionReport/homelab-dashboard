@@ -1,10 +1,26 @@
-title: Homelab
-description: Personal systems, media, and infrastructure health
+title: Homelab · Preview
+description: Personal systems, media, and the dependencies that keep them running
 theme: dark
 color: slate
 headerStyle: clean
 statusStyle: dot
+hideVersion: true
 layout:
+  Overview:
+    style: row
+    columns: 1
   Media Server:
+    style: row
+    columns: 3
+  Storage & Protection:
+    style: row
+    columns: 3
+  Infrastructure:
+    style: row
+    columns: 3
+  Network & Home:
+    style: row
+    columns: 3
+  Shared Dependencies:
     style: row
     columns: 3

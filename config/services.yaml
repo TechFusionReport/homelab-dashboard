@@ -1,57 +1,348 @@
+- Overview:
+    - Needs attention:
+        description: "Live checks · failures are grouped by the systems they affect"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/summary"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Overall"
+              format: text
+            - field: details
+              label: "Attention"
+              format: text
+            - field: checked
+              label: "Last checked"
+              format: text
+            - field: coverage
+              label: "Coverage"
+              format: text
+
 - Media Server:
     - Prowlarr:
+        description: "DISCOVER · Indexers and app health"
         href: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
-        description: Indexers and search activity
-        siteMonitor: "{{HOMEPAGE_VAR_PROWLARR_API_URL}}"
         widget:
-          type: prowlarr
-          url: "{{HOMEPAGE_VAR_PROWLARR_API_URL}}"
-          key: "{{HOMEPAGE_VAR_PROWLARR_KEY}}"
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/prowlarr"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Health"
+              format: text
+            - field: warnings
+              label: "Warnings"
+              format: text
+            - field: version
+              label: "Version"
+              format: text
     - Radarr:
+        description: "MOVIES · Search → download → import"
         href: "{{HOMEPAGE_VAR_RADARR_URL}}"
-        description: Movies and download queue
-        siteMonitor: "{{HOMEPAGE_VAR_RADARR_API_URL}}"
         widget:
-          type: radarr
-          url: "{{HOMEPAGE_VAR_RADARR_API_URL}}"
-          key: "{{HOMEPAGE_VAR_RADARR_KEY}}"
-          enableQueue: true
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/radarr"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Health"
+              format: text
+            - field: queued
+              label: "Queued"
+              format: text
+            - field: wanted
+              label: "Missing"
+              format: text
+            - field: blocked
+              label: "Queue warnings"
+              format: text
     - Sonarr:
+        description: "TELEVISION · Search → download → import"
         href: "{{HOMEPAGE_VAR_SONARR_URL}}"
-        description: Television and download queue
-        siteMonitor: "{{HOMEPAGE_VAR_SONARR_API_URL}}"
         widget:
-          type: sonarr
-          url: "{{HOMEPAGE_VAR_SONARR_API_URL}}"
-          key: "{{HOMEPAGE_VAR_SONARR_KEY}}"
-          enableQueue: true
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/sonarr"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Health"
+              format: text
+            - field: queued
+              label: "Queued"
+              format: text
+            - field: wanted
+              label: "Missing"
+              format: text
+            - field: blocked
+              label: "Queue warnings"
+              format: text
     - qBittorrent:
+        description: "TRANSFER · Download and seeding connection"
         href: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
-        description: Transfers and seeding
-        siteMonitor: "{{HOMEPAGE_VAR_QBITTORRENT_API_URL}}"
         widget:
-          type: qbittorrent
-          url: "{{HOMEPAGE_VAR_QBITTORRENT_API_URL}}"
-          username: "{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}"
-          password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
-          enableLeechProgress: true
-          enableLeechSize: true
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/qbittorrent"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: connection
+              label: "Transfer API"
+              format: text
+            - field: download
+              label: "Down MiB/s"
+              format: text
+            - field: upload
+              label: "Up MiB/s"
+              format: text
     - Jellyfin:
+        description: "PLAYBACK · Library and live TV"
         href: "{{HOMEPAGE_VAR_JELLYFIN_URL}}"
-        description: Library and playback
-        siteMonitor: "{{HOMEPAGE_VAR_JELLYFIN_API_URL}}"
         widget:
-          type: jellyfin
-          url: "{{HOMEPAGE_VAR_JELLYFIN_API_URL}}"
-          key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
-          enableBlocks: true
-          enableNowPlaying: true
-          enableMediaControl: false
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/jellyfin"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: version
+              label: "Version"
+              format: text
     - Plex:
+        description: "PLAYBACK · Personal media library"
         href: "{{HOMEPAGE_VAR_PLEX_URL}}"
-        description: Library and playback — detailed metrics planned
-        siteMonitor: "{{HOMEPAGE_VAR_PLEX_URL}}"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/plex"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
     - Threadfin:
+        description: "LIVE TV · Playlist and tuner bridge"
         href: "{{HOMEPAGE_VAR_THREADFIN_URL}}"
-        description: Live TV — guide freshness checks planned
-        siteMonitor: "{{HOMEPAGE_VAR_THREADFIN_URL}}"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/threadfin"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+
+- Storage & Protection:
+    - Media storage:
+        description: "Download and import dependency · expected SMB share verified"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/storage"
+          refreshInterval: 15000
+          mappings:
+            - field: mount
+              label: "Mount"
+              format: text
+            - field: free_gib
+              label: "Free GiB"
+              format: text
+            - field: used_percent
+              label: "Used %"
+              format: text
+            - field: libraries
+              label: "Playback mounts"
+              format: text
+    - Storage watchdog:
+        description: "Read-only observation of the existing watchdog; no recovery actions"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/storage"
+          refreshInterval: 15000
+          mappings:
+            - field: watchdog
+              label: "Watchdog"
+              format: text
+            - field: probe
+              label: "Storage probe"
+              format: text
+            - field: status
+              label: "Storage state"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+    - Backups:
+        description: "No green status without evidence of a successful backup"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/backups"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Monitor"
+              format: text
+            - field: last_success
+              label: "Last success"
+              format: text
+
+- Infrastructure:
+    - Media host:
+        description: "Pi resources · sampled on the host, outside container namespaces"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/host"
+          refreshInterval: 15000
+          mappings:
+            - field: load
+              label: "Load 1m"
+              format: text
+            - field: memory_percent
+              label: "Memory %"
+              format: text
+            - field: temperature
+              label: "Temp \u00b0C"
+              format: text
+            - field: containers
+              label: "Running containers"
+              format: text
+            - field: uptime_hours
+              label: "Uptime hours"
+              format: text
+    - Windows media host:
+        description: "SMB service availability; filesystem health is shown above"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/windows"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "SMB"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+    - Oracle cloud:
+        description: "Shared dependency · existing Glances metrics over the mesh"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/oracle"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Health"
+              format: text
+            - field: cpu_percent
+              label: "CPU %"
+              format: text
+            - field: memory_percent
+              label: "Memory %"
+              format: text
+    - Hetzner:
+        description: "Shared infrastructure host · reachability only"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/hetzner"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "SSH connection"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+
+- Network & Home:
+    - Pi-hole:
+        description: "Home DNS interface · query-level checks are not connected yet"
+        href: "{{HOMEPAGE_VAR_PIHOLE_URL}}"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/pihole"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Web interface"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+    - Home Assistant:
+        description: "Home automation availability"
+        href: "{{HOMEPAGE_VAR_HOMEASSISTANT_URL}}"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/homeassistant"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+    - LAN monitor:
+        description: "Local network inventory interface"
+        href: "{{HOMEPAGE_VAR_NETALERTX_URL}}"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/netalertx"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+
+- Shared Dependencies:
+    - n8n:
+        description: "Availability only · business workflows stay outside this dashboard"
+        href: "{{HOMEPAGE_VAR_N8N_URL}}"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/n8n"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+    - Vaultwarden:
+        description: "Personal credential service availability"
+        href: "{{HOMEPAGE_VAR_VAULTWARDEN_URL}}"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/vaultwarden"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text
+    - Syncthing:
+        description: "Personal sync service availability; file contents are excluded"
+        href: "{{HOMEPAGE_VAR_SYNCTHING_URL}}"
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HEALTH_URL}}/services/syncthing"
+          refreshInterval: 15000
+          mappings:
+            - field: status
+              label: "Service"
+              format: text
+            - field: observed_at
+              label: "Last checked"
+              format: text

@@ -1,0 +1,16 @@
+# Linux-only preview. Host networking lets Homepage reach loopback-only collectors.
+name: homelab-dashboard-preview
+services:
+  homepage:
+    image: ${HOMEPAGE_IMAGE:?Set a tested Homepage image tag or digest}
+    container_name: homelab-dashboard-preview
+    network_mode: host
+    restart: unless-stopped
+    env_file: ../local/preview.env
+    environment:
+      PORT: "3080"
+      HOSTNAME: "127.0.0.1"
+    volumes:
+      - ../local/preview-homepage:/app/config
+    security_opt:
+      - no-new-privileges:true

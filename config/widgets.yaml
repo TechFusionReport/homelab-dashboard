@@ -1,1 +1,8 @@
-[]
+- greeting:
+    text: Homelab / Preview
+- datetime:
+    text_size: md
+    format:
+      dateStyle: full
+      timeStyle: short
+      hour12: true
