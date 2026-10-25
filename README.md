@@ -1,4 +1,4 @@
-# Homelab Dashboard
+# Area J Homelab
 
 A personal dashboard for home systems, media services, storage, and the shared infrastructure they depend on.
 
@@ -6,7 +6,7 @@ This project is separate from TechFusion ops. n8n and Oracle are included only f
 
 ## Status
 
-Initial Homepage scaffold. It is not deployed or connected to live systems yet. Storage checks, watchdog integration, incident aggregation, and workflow filtering are planned; the starter does not claim to provide them.
+Homepage preview with a read-only host health collector, media API health and queues, SMB mount verification, watchdog observation, and dependency reachability. See [preview deployment](docs/preview.md). Backup freshness, authenticated playback statistics, and per-workflow n8n monitoring are not connected yet.
 
 ## Start locally
 
@@ -23,7 +23,7 @@ docker compose up -d
 
 Open http://localhost:3000. The default port binding is loopback only. Homepage does not supply authentication: put an authenticated reverse proxy in front of it before making it accessible beyond the host. Allowed hostnames are request validation, not authentication.
 
-The example image uses the upstream latest tag for initial evaluation. Set HOMEPAGE_IMAGE to a tested release tag or digest before production use.
+The example image is pinned to Homepage v2.7.0. Test image updates in preview before production promotion.
 
 ## Layout
 
@@ -36,9 +36,9 @@ The example image uses the upstream latest tag for initial evaluation. Set HOMEP
 
 ## Media services
 
-The starter includes Prowlarr, Radarr, Sonarr, qBittorrent, Jellyfin, Plex, and Threadfin links. Native metrics are configured for the first five; Plex and Threadfin begin as links and HTTP availability checks. Populate the private URLs and credentials before expecting valid readings. An HTTP response alone does not prove the media pipeline is healthy.
+The starter includes Prowlarr, Radarr, Sonarr, qBittorrent, Jellyfin, Plex, and Threadfin links. The host collector supplies app health and queue metrics through Homepage Custom API widgets; playback services begin with reachability checks. qBittorrent transfer metrics require API authorization. Populate the private URLs and credentials before expecting valid readings. An HTTP response alone does not prove the media pipeline is healthy.
 
-The full design follows discovery → download → import → library → playback/live TV, with SMB storage and its watchdog treated as first-class dependencies.
+The full design follows discovery ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ download ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ import ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ library ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ playback/live TV, with SMB storage and its watchdog treated as first-class dependencies.
 
 ## Public source, private deployment
 

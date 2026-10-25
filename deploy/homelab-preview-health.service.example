@@ -1,0 +1,17 @@
+[Unit]
+Description=Homelab preview read-only health collector
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=REPLACE_USER
+WorkingDirectory=REPLACE_CHECKOUT
+ExecStart=/usr/bin/python3 REPLACE_CHECKOUT/collectors/health.py --config REPLACE_CHECKOUT/local/health.json
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

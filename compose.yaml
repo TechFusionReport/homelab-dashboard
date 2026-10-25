@@ -8,6 +8,7 @@ services:
     env_file:
       - .env
     volumes:
+      - ./assets:/app/public/images:ro
       - type: bind
         source: ./local/homepage
         target: /app/config

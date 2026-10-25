@@ -6,7 +6,9 @@ from shutil import copyfile
 def bootstrap(root: Path) -> None:
     runtime = root / "local" / "homepage"
     runtime.mkdir(parents=True, exist_ok=True)
-    for source in sorted((root / "config").glob("*.yaml")):
+    for source in sorted((root / "config").iterdir()):
+        if source.suffix not in (".yaml", ".css", ".js"):
+            continue
         target = runtime / source.name
         if not target.exists():
             copyfile(source, target)

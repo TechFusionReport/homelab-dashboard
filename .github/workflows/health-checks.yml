@@ -1,0 +1,27 @@
+name: Validate dashboard
+on:
+  push:
+    branches: [preview]
+  pull_request:
+    branches: [preview, main]
+permissions:
+  contents: read
+jobs:
+  validate-dashboard:
+    name: Validate health collector and dashboard config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test read-only health behavior
+        run: python3 -m unittest discover -s tests -v
+      - name: Verify generated templates
+        run: |
+          python3 scripts/render_services.py
+          git diff --exit-code -- config/services.yaml
+      - name: Validate isolated preview Compose
+        run: |
+          mkdir -p local/preview-homepage
+          cp .env.example .env
+          cp .env.example local/preview.env
+          docker compose config --quiet
+          docker compose --env-file local/preview.env -f deploy/preview.compose.yaml config --quiet

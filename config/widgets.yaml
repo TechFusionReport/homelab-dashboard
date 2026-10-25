@@ -1,1 +1,10 @@
-[]
+- logo:
+    icon: /images/area-j-logo.png
+- greeting:
+    text: Preview
+- datetime:
+    text_size: md
+    format:
+      dateStyle: full
+      timeStyle: short
+      hour12: true
