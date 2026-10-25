@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check text encoding and production templates
+        run: python3 scripts/check_repo.py
       - name: Test read-only health behavior
         run: python3 -m unittest discover -s tests -v
       - name: Verify generated templates

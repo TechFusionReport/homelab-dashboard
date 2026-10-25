@@ -52,4 +52,4 @@ group('Shared Dependencies', [
 ])
 
 if __name__ == '__main__':
-    (ROOT / 'config' / 'services.yaml').write_text('\n\n'.join(groups) + '\n', encoding='utf-8')
+    (ROOT / 'config' / 'services.yaml').write_text('\n\n'.join(groups) + '\n', encoding='utf-8', newline='\n')
