@@ -1,0 +1,57 @@
+- Media Server:
+    - Prowlarr:
+        href: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
+        description: Indexers and search activity
+        siteMonitor: "{{HOMEPAGE_VAR_PROWLARR_API_URL}}"
+        widget:
+          type: prowlarr
+          url: "{{HOMEPAGE_VAR_PROWLARR_API_URL}}"
+          key: "{{HOMEPAGE_VAR_PROWLARR_KEY}}"
+    - Radarr:
+        href: "{{HOMEPAGE_VAR_RADARR_URL}}"
+        description: Movies and download queue
+        siteMonitor: "{{HOMEPAGE_VAR_RADARR_API_URL}}"
+        widget:
+          type: radarr
+          url: "{{HOMEPAGE_VAR_RADARR_API_URL}}"
+          key: "{{HOMEPAGE_VAR_RADARR_KEY}}"
+          enableQueue: true
+    - Sonarr:
+        href: "{{HOMEPAGE_VAR_SONARR_URL}}"
+        description: Television and download queue
+        siteMonitor: "{{HOMEPAGE_VAR_SONARR_API_URL}}"
+        widget:
+          type: sonarr
+          url: "{{HOMEPAGE_VAR_SONARR_API_URL}}"
+          key: "{{HOMEPAGE_VAR_SONARR_KEY}}"
+          enableQueue: true
+    - qBittorrent:
+        href: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+        description: Transfers and seeding
+        siteMonitor: "{{HOMEPAGE_VAR_QBITTORRENT_API_URL}}"
+        widget:
+          type: qbittorrent
+          url: "{{HOMEPAGE_VAR_QBITTORRENT_API_URL}}"
+          username: "{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
+          enableLeechProgress: true
+          enableLeechSize: true
+    - Jellyfin:
+        href: "{{HOMEPAGE_VAR_JELLYFIN_URL}}"
+        description: Library and playback
+        siteMonitor: "{{HOMEPAGE_VAR_JELLYFIN_API_URL}}"
+        widget:
+          type: jellyfin
+          url: "{{HOMEPAGE_VAR_JELLYFIN_API_URL}}"
+          key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
+          enableBlocks: true
+          enableNowPlaying: true
+          enableMediaControl: false
+    - Plex:
+        href: "{{HOMEPAGE_VAR_PLEX_URL}}"
+        description: Library and playback — detailed metrics planned
+        siteMonitor: "{{HOMEPAGE_VAR_PLEX_URL}}"
+    - Threadfin:
+        href: "{{HOMEPAGE_VAR_THREADFIN_URL}}"
+        description: Live TV — guide freshness checks planned
+        siteMonitor: "{{HOMEPAGE_VAR_THREADFIN_URL}}"

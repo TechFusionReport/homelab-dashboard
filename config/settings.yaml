@@ -1,0 +1,10 @@
+title: Homelab
+description: Personal systems, media, and infrastructure health
+theme: dark
+color: slate
+headerStyle: clean
+statusStyle: dot
+layout:
+  Media Server:
+    style: row
+    columns: 3

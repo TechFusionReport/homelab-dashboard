@@ -1,0 +1,17 @@
+name: homelab-dashboard
+services:
+  homepage:
+    image: ${HOMEPAGE_IMAGE:-ghcr.io/gethomepage/homepage:latest}
+    restart: unless-stopped
+    ports:
+      - "${DASHBOARD_BIND_ADDRESS:-127.0.0.1}:${DASHBOARD_PORT:-3000}:3000"
+    env_file:
+      - .env
+    volumes:
+      - type: bind
+        source: ./local/homepage
+        target: /app/config
+        bind:
+          create_host_path: false
+    security_opt:
+      - no-new-privileges:true
