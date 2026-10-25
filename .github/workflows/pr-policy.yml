@@ -1,0 +1,58 @@
+name: PR policy
+
+on:
+  pull_request:
+    branches: [preview, main]
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  promotion-path:
+    name: Require preview before production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate promotion source
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+          with open(os.environ['GITHUB_EVENT_PATH'], encoding='utf-8') as source:
+              event = json.load(source)
+          pr = event['pull_request']
+          if pr['base']['ref'] == 'main':
+              head_repo = (pr['head'].get('repo') or {}).get('full_name')
+              if pr['head']['ref'] != 'preview' or head_repo != event['repository']['full_name']:
+                  print('Production accepts PRs only from this repository\'s preview branch.')
+                  sys.exit(1)
+          print('Branch promotion path is valid.')
+          PY
+
+  validate-pr-metadata:
+    name: Require PR metadata footer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR body metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import sys
+          with open(os.environ['GITHUB_EVENT_PATH'], encoding='utf-8') as source:
+              event = json.load(source)
+          body = event.get('pull_request', {}).get('body') or ''
+          missing = []
+          for field in ('Agent', 'Task', 'Risk'):
+              match = re.search(rf'(?m)^\s*(?:\*\*)?{field}:(?:\*\*)?[^\S\n]*(.*)$', body)
+              value = match.group(1).strip() if match else ''
+              if not value or value.startswith('<'):
+                  missing.append(field)
+          if missing:
+              print('Missing required PR metadata field(s): ' + ', '.join(missing))
+              sys.exit(1)
+          print('Required PR metadata fields are present.')
+          PY
