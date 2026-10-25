@@ -10,4 +10,4 @@ The palette bar remembers the selection in this browser only. It does not change
 
 The service card interaction follows the TFR website category cards: translateY(-8px), scale(1.015), a 3px accent outline, and the same 180ms transition/deep shadow. Keyboard focus gets the same treatment. Reduced-motion preferences keep the outline while disabling the lift and animation. Touch devices do not get a persistent hover lift.
 
-Copy both config/custom.css and config/custom.js into the runtime Homepage configuration folder when updating. The local bootstrap also includes them.
+After changing config/custom.css or config/custom.js, refresh the runtime folder with `python scripts/bootstrap.py --target preview --overwrite` (or without `--target` for production).

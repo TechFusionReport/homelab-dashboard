@@ -32,6 +32,20 @@ def json_get(url, key=None):
         return json.loads(response.read(2_000_000))
 
 
+def queue_counts(base, key, page_size=100, max_pages=10):
+    """Count queue rows with status messages across pages, bounded to max_pages requests."""
+    total, blocked, page = 0, 0, 1
+    while page <= max_pages:
+        queue = json_get(f'{base}/queue?page={page}&pageSize={page_size}', key)
+        total = queue.get('totalRecords', 0)
+        records = queue.get('records', [])
+        blocked += sum(bool(row.get('statusMessages')) for row in records)
+        if not records or page * page_size >= total:
+            break
+        page += 1
+    return total, blocked
+
+
 def check_service(item):
     result = {'id': item['id'], 'status': 'Unknown', 'version': '—', 'queued': '—', 'wanted': '—', 'warnings': '—'}
     try:
@@ -69,9 +83,7 @@ def check_service(item):
             result['warnings'] = len(warnings)
             result['status'] = 'Degraded' if warnings else 'Healthy'
             if kind != 'prowlarr':
-                queue = json_get(base + '/queue?page=1&pageSize=100', key)
-                result['queued'] = queue.get('totalRecords', 0)
-                result['blocked'] = sum(bool(row.get('statusMessages')) for row in queue.get('records', []))
+                result['queued'], result['blocked'] = queue_counts(base, key)
                 wanted = json_get(base + '/wanted/missing?page=1&pageSize=1', key)
                 result['wanted'] = wanted.get('totalRecords', 0)
                 if result['blocked']:
@@ -103,7 +115,7 @@ def check_storage(config):
     try:
         source = command(['findmnt', '-rn', '-M', config['mount'], '-t', 'cifs', '-o', 'SOURCE'])
         if source != config['expected_source']:
-            result.update(status='Down', mount='Unexpected filesystem')
+            result.update(status='Down', mount='Unexpected filesystem', observed_at=now())
             return result
         result['mount'] = 'Expected SMB share mounted'
         lines = command(['df', '-B1', '--output=size,avail', config['mount']]).splitlines()
@@ -112,8 +124,13 @@ def check_storage(config):
         result['used_percent'] = round((1 - available / total) * 100, 1)
         result['status'] = 'Healthy' if available >= config.get('minimum_free_gib', 30) * 1073741824 else 'Low space'
         if config.get('health_script'):
-            command([config['health_script']], timeout=25)
-            result['probe'] = 'Passed (read-only)'
+            # A failing probe degrades storage but keeps the verified mount and capacity readings.
+            try:
+                command([config['health_script']], timeout=25)
+                result['probe'] = 'Passed (read-only)'
+            except Exception as error:
+                result['probe'] = 'Failed: ' + type(error).__name__
+                result['status'] = 'Degraded'
         mismatches = []
         for library in config.get('library_paths', []):
             # Trigger an automount through a bounded subprocess; never touch it in the API thread.
@@ -143,7 +160,7 @@ def check_storage(config):
     return result
 
 
-def check_host():
+def check_host(docker_api=None):
     result = {'status': 'Unknown', 'load': '—', 'memory_percent': '—', 'temperature': '—', 'containers': '—', 'uptime_hours': '—'}
     try:
         mem = {}
@@ -156,19 +173,25 @@ def check_host():
             result['temperature'] = round(int(thermal.read_text()) / 1000, 1)
     except Exception:
         pass
-    try:
-        result['containers'] = len(command(['docker', 'ps', '-q']).splitlines())
-    except Exception:
-        pass
+    # Count containers through a list-only Docker API proxy; the collector never needs docker group access.
+    if docker_api:
+        try:
+            result['containers'] = len(json_get(docker_api.rstrip('/') + '/containers/json'))
+        except Exception:
+            pass
+    result['observed_at'] = now()
     return result
 
 
 def collect(config):
-    with ThreadPoolExecutor(max_workers=6) as pool:
-        service_future = pool.submit(lambda: list(pool.map(check_service, config.get('services', []))))
+    # One worker per check, so a refresh takes as long as the slowest check rather than queuing behind it.
+    service_configs = config.get('services', [])
+    with ThreadPoolExecutor(max_workers=len(service_configs) + 2) as pool:
+        service_futures = [pool.submit(check_service, item) for item in service_configs]
         storage_future = pool.submit(check_storage, config.get('storage'))
-        host_future = pool.submit(check_host)
-        services, storage, host = service_future.result(), storage_future.result(), host_future.result()
+        host_future = pool.submit(check_host, config.get('docker_api'))
+        services = [future.result() for future in service_futures]
+        storage, host = storage_future.result(), host_future.result()
     down = [s['id'] for s in services if s['status'] == 'Down']
     degraded = [s['id'] for s in services if s['status'].startswith('Degraded')]
     issues = []

@@ -1,7 +1,5 @@
 - logo:
-    icon: /images/area-j-logo.png
-- greeting:
-    text: Preview
+    icon: /images/area-j-logo.jpg
 - datetime:
     text_size: md
     format:
