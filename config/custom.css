@@ -1,10 +1,179 @@
-:root { color-scheme: dark; }
-body, #page_wrapper { background: radial-gradient(ellipse at 15% 0%, #153339 0%, #101820 42%, #0a1017 85%) !important; }
-#information-widgets { border-bottom: 1px solid #365058; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
-.service-card { border: 1px solid rgba(128,174,177,.16); border-radius: 14px !important; box-shadow: 0 8px 28px #0002; margin-bottom: .65rem !important; }
-.service-card:hover { border-color: rgba(128,224,211,.5); }
-.service-title { letter-spacing: -.015em; }
-.service-description { opacity: .8; }
-.service-block { background: rgba(9,19,25,.28) !important; border-radius: 8px; }
-.service-block-text { white-space: normal; overflow-wrap: anywhere; }
-.service-group-name { text-transform: uppercase; letter-spacing: .13em; font-size: .83rem !important; color: #a3c6c7; }
+/* Homelab has its own identity. Only the card motion is shared with TFR. */
+:root {
+  color-scheme: dark;
+  --lab-ink: #0d0d15;
+  --lab-panel: #181824;
+  --lab-panel-raised: #202031;
+  --lab-text: #f0edf9;
+  --lab-muted: #b1adca;
+  --lab-primary: #a58bff;
+  --lab-secondary: #68e0bf;
+  --lab-tertiary: #ffc58a;
+  --lab-aura: rgba(134, 101, 218, .17);
+  --lab-grid: rgba(165, 139, 255, .035);
+}
+
+:root[data-homelab-theme="afterglow"] {
+  --lab-ink: #140e15;
+  --lab-panel: #231923;
+  --lab-panel-raised: #2b202d;
+  --lab-primary: #ff9eae;
+  --lab-secondary: #baa2ff;
+  --lab-tertiary: #f4cb92;
+  --lab-aura: rgba(217, 105, 151, .16);
+  --lab-grid: rgba(255, 158, 174, .035);
+}
+
+:root[data-homelab-theme="phosphor"] {
+  --lab-ink: #0d1413;
+  --lab-panel: #172320;
+  --lab-panel-raised: #20302b;
+  --lab-primary: #83d9ae;
+  --lab-secondary: #eac58d;
+  --lab-tertiary: #c7b3ee;
+  --lab-aura: rgba(92, 174, 130, .15);
+  --lab-grid: rgba(131, 217, 174, .035);
+}
+
+html, body { background: var(--lab-ink) !important; color: var(--lab-text); }
+#page_wrapper {
+  background:
+    linear-gradient(var(--lab-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lab-grid) 1px, transparent 1px),
+    radial-gradient(ellipse at 8% 0%, var(--lab-aura), transparent 52%),
+    var(--lab-ink) !important;
+  background-size: 48px 48px, 48px 48px, auto, auto;
+  padding-bottom: 5.5rem;
+}
+
+#widgets-wrap {
+  border-bottom: 1px solid color-mix(in srgb, var(--lab-primary) 30%, transparent);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.services-group { --group-accent: var(--lab-primary); }
+.services-group:nth-of-type(3n + 2) { --group-accent: var(--lab-secondary); }
+.services-group:nth-of-type(3n) { --group-accent: var(--lab-tertiary); }
+.services-group h2 {
+  color: var(--group-accent) !important;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: .78rem !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+}
+.services-group h2::before { content: "// "; opacity: .6; }
+.services-list { padding: .2rem; gap: .75rem !important; }
+
+.service-card {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(150deg, var(--lab-panel-raised), var(--lab-panel)) !important;
+  color: var(--lab-text) !important;
+  border: 1px solid color-mix(in srgb, var(--group-accent) 28%, transparent);
+  border-radius: 10px !important;
+  margin-bottom: .55rem !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .18);
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease !important;
+}
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1.1rem;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--group-accent);
+  opacity: .8;
+  pointer-events: none;
+}
+.service-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid transparent;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, border-color .18s ease;
+}
+.service-title-text { color: var(--lab-text) !important; padding-top: .55rem; }
+.service-title { font-weight: 650; letter-spacing: -.015em; }
+.service-description { color: var(--lab-muted) !important; opacity: 1; line-height: 1.5; }
+.service-block { background: rgba(4, 4, 12, .22) !important; border-radius: 6px; }
+.service-block-text { white-space: normal; overflow-wrap: anywhere; color: var(--lab-text); }
+
+/* Same lift, scale, outline and shadow as TFR's category destination cards. */
+@media (hover: hover) and (pointer: fine) {
+  .service-card:hover {
+    transform: translateY(-8px) scale(1.015);
+    border-color: var(--group-accent);
+    box-shadow: 0 26px 62px rgba(0, 0, 0, .35), 0 0 24px color-mix(in srgb, var(--group-accent) 11%, transparent);
+    z-index: 2;
+  }
+  .service-card:hover::after { border-color: var(--group-accent); opacity: 1; }
+}
+.service-card:focus-within {
+  transform: translateY(-8px) scale(1.015);
+  border-color: var(--group-accent);
+  box-shadow: 0 26px 62px rgba(0, 0, 0, .35);
+  z-index: 2;
+}
+.service-card:focus-within::after { border-color: var(--group-accent); opacity: 1; }
+.service-title-text:focus-visible { outline: 2px solid var(--group-accent); outline-offset: -2px; border-radius: 7px; }
+
+.lab-theme-switcher {
+  position: fixed;
+  z-index: 50;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  max-width: calc(100vw - 1.5rem);
+  padding: .35rem;
+  border: 1px solid color-mix(in srgb, var(--lab-primary) 35%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--lab-ink) 91%, transparent);
+  box-shadow: 0 12px 40px #0008;
+  backdrop-filter: blur(18px);
+}
+.lab-theme-switcher-label {
+  font: 600 .62rem ui-monospace, Consolas, monospace;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--lab-muted);
+  padding: 0 .65rem;
+}
+.lab-theme-button {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 38px;
+  padding: .4rem .7rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--lab-muted);
+  cursor: pointer;
+  font: 600 .72rem system-ui, sans-serif;
+  white-space: nowrap;
+}
+.lab-theme-swatch { width: 7px; height: 7px; border-radius: 50%; background: var(--swatch); }
+.lab-theme-button[aria-pressed="true"] {
+  background: var(--lab-panel-raised);
+  border-color: color-mix(in srgb, var(--lab-primary) 55%, transparent);
+  color: var(--lab-text);
+}
+.lab-theme-button:hover { color: var(--lab-text); background: var(--lab-panel); }
+.lab-theme-button:focus-visible { outline: 2px solid var(--lab-primary); outline-offset: 2px; }
+@media (max-width: 480px) {
+  .lab-theme-switcher-label { display: none; }
+  .lab-theme-button { min-height: 44px; padding: .4rem .6rem; font-size: .68rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-card, .service-card::after { transition: none !important; }
+  .service-card:hover, .service-card:focus-within { transform: none !important; }
+}
