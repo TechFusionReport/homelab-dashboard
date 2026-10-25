@@ -1,8 +1,8 @@
 :root { color-scheme: dark; }
-body { background: radial-gradient(ellipse at 15% 0%, #153339 0%, #101820 42%, #0a1017 85%) !important; }
+body, #page_wrapper { background: radial-gradient(ellipse at 15% 0%, #153339 0%, #101820 42%, #0a1017 85%) !important; }
 #information-widgets { border-bottom: 1px solid #365058; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
-.service { border: 1px solid rgba(128,174,177,.16); border-radius: 14px !important; box-shadow: 0 8px 28px #0002; }
-.service:hover { border-color: rgba(128,224,211,.5); }
+.service-card { border: 1px solid rgba(128,174,177,.16); border-radius: 14px !important; box-shadow: 0 8px 28px #0002; margin-bottom: .65rem !important; }
+.service-card:hover { border-color: rgba(128,224,211,.5); }
 .service-title { letter-spacing: -.015em; }
 .service-description { opacity: .8; }
 .service-block { background: rgba(9,19,25,.28) !important; border-radius: 8px; }

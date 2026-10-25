@@ -14,7 +14,7 @@
               format: text
             - field: checked
               label: "Last checked"
-              format: text
+              format: relativeDate
             - field: coverage
               label: "Coverage"
               format: text
@@ -124,7 +124,7 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
     - Threadfin:
         description: "LIVE TV · Playlist and tuner bridge"
         href: "{{HOMEPAGE_VAR_THREADFIN_URL}}"
@@ -138,7 +138,7 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
 
 - Storage & Protection:
     - Media storage:
@@ -161,7 +161,7 @@
               label: "Playback mounts"
               format: text
     - Storage watchdog:
-        description: "Read-only observation of the existing watchdog; no recovery actions"
+        description: "Storage safeguard and latest filesystem check"
         widget:
           type: customapi
           url: "{{HOMEPAGE_VAR_HEALTH_URL}}/storage"
@@ -178,9 +178,9 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
     - Backups:
-        description: "No green status without evidence of a successful backup"
+        description: "Backup completion and freshness"
         widget:
           type: customapi
           url: "{{HOMEPAGE_VAR_HEALTH_URL}}/backups"
@@ -195,7 +195,7 @@
 
 - Infrastructure:
     - Media host:
-        description: "Pi resources · sampled on the host, outside container namespaces"
+        description: "Pi resources and running services"
         widget:
           type: customapi
           url: "{{HOMEPAGE_VAR_HEALTH_URL}}/host"
@@ -213,9 +213,6 @@
             - field: containers
               label: "Running containers"
               format: text
-            - field: uptime_hours
-              label: "Uptime hours"
-              format: text
     - Windows media host:
         description: "SMB service availability; filesystem health is shown above"
         widget:
@@ -228,7 +225,7 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
     - Oracle cloud:
         description: "Shared dependency · existing Glances metrics over the mesh"
         widget:
@@ -257,11 +254,11 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
 
 - Network & Home:
     - Pi-hole:
-        description: "Home DNS interface · query-level checks are not connected yet"
+        description: "Home DNS interface availability"
         href: "{{HOMEPAGE_VAR_PIHOLE_URL}}"
         widget:
           type: customapi
@@ -273,7 +270,7 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
     - Home Assistant:
         description: "Home automation availability"
         href: "{{HOMEPAGE_VAR_HOMEASSISTANT_URL}}"
@@ -287,7 +284,7 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
     - LAN monitor:
         description: "Local network inventory interface"
         href: "{{HOMEPAGE_VAR_NETALERTX_URL}}"
@@ -301,11 +298,11 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
 
 - Shared Dependencies:
     - n8n:
-        description: "Availability only · business workflows stay outside this dashboard"
+        description: "Shared automation service availability"
         href: "{{HOMEPAGE_VAR_N8N_URL}}"
         widget:
           type: customapi
@@ -317,7 +314,7 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
     - Vaultwarden:
         description: "Personal credential service availability"
         href: "{{HOMEPAGE_VAR_VAULTWARDEN_URL}}"
@@ -331,7 +328,7 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate
     - Syncthing:
         description: "Personal sync service availability; file contents are excluded"
         href: "{{HOMEPAGE_VAR_SYNCTHING_URL}}"
@@ -345,4 +342,4 @@
               format: text
             - field: observed_at
               label: "Last checked"
-              format: text
+              format: relativeDate

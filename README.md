@@ -38,7 +38,7 @@ The example image is pinned to Homepage v2.7.0. Test image updates in preview be
 
 The starter includes Prowlarr, Radarr, Sonarr, qBittorrent, Jellyfin, Plex, and Threadfin links. The host collector supplies app health and queue metrics through Homepage Custom API widgets; playback services begin with reachability checks. qBittorrent transfer metrics require API authorization. Populate the private URLs and credentials before expecting valid readings. An HTTP response alone does not prove the media pipeline is healthy.
 
-The full design follows discovery ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ download ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ import ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ library ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ playback/live TV, with SMB storage and its watchdog treated as first-class dependencies.
+The full design follows discovery ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ download ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ import ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ library ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ playback/live TV, with SMB storage and its watchdog treated as first-class dependencies.
 
 ## Public source, private deployment
 

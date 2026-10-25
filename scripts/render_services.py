@@ -11,7 +11,7 @@ def card(name, description, endpoint, fields, href=None):
         lines.append(f'        href: "{{{{HOMEPAGE_VAR_{href}_URL}}}}"')
     lines += ['        widget:', '          type: customapi', f'          url: "{{{{HOMEPAGE_VAR_HEALTH_URL}}}}/{endpoint}"', '          refreshInterval: 15000', '          mappings:']
     for field, label in fields:
-        lines += [f'            - field: {field}', f'              label: {json.dumps(label)}', '              format: text']
+        lines += [f'            - field: {field}', f'              label: {json.dumps(label)}', '              format: relativeDate' if field in ('checked', 'observed_at') else '              format: text']
     return '\n'.join(lines)
 
 
@@ -31,22 +31,22 @@ group('Media Server', [
 ])
 group('Storage & Protection', [
     card('Media storage', 'Download and import dependency · expected SMB share verified', 'storage', [('mount','Mount'),('free_gib','Free GiB'),('used_percent','Used %'),('libraries','Playback mounts')]),
-    card('Storage watchdog', 'Read-only observation of the existing watchdog; no recovery actions', 'storage', [('watchdog','Watchdog'),('probe','Storage probe'),('status','Storage state'),('observed_at','Last checked')]),
-    card('Backups', 'No green status without evidence of a successful backup', 'backups', [('status','Monitor'),('last_success','Last success')])
+    card('Storage watchdog', 'Storage safeguard and latest filesystem check', 'storage', [('watchdog','Watchdog'),('probe','Storage probe'),('status','Storage state'),('observed_at','Last checked')]),
+    card('Backups', 'Backup completion and freshness', 'backups', [('status','Monitor'),('last_success','Last success')])
 ])
 group('Infrastructure', [
-    card('Media host', 'Pi resources · sampled on the host, outside container namespaces', 'host', [('load','Load 1m'),('memory_percent','Memory %'),('temperature','Temp °C'),('containers','Running containers'),('uptime_hours','Uptime hours')]),
+    card('Media host', 'Pi resources and running services', 'host', [('load','Load 1m'),('memory_percent','Memory %'),('temperature','Temp °C'),('containers','Running containers')]),
     card('Windows media host', 'SMB service availability; filesystem health is shown above', 'services/windows', [('status','SMB'),('observed_at','Last checked')]),
     card('Oracle cloud', 'Shared dependency · existing Glances metrics over the mesh', 'services/oracle', [('status','Health'),('cpu_percent','CPU %'),('memory_percent','Memory %')]),
     card('Hetzner', 'Shared infrastructure host · reachability only', 'services/hetzner', [('status','SSH connection'),('observed_at','Last checked')])
 ])
 group('Network & Home', [
-    card('Pi-hole', 'Home DNS interface · query-level checks are not connected yet', 'services/pihole', [('status','Web interface'),('observed_at','Last checked')], 'PIHOLE'),
+    card('Pi-hole', 'Home DNS interface availability', 'services/pihole', [('status','Web interface'),('observed_at','Last checked')], 'PIHOLE'),
     card('Home Assistant', 'Home automation availability', 'services/homeassistant', [('status','Service'),('observed_at','Last checked')], 'HOMEASSISTANT'),
     card('LAN monitor', 'Local network inventory interface', 'services/netalertx', [('status','Service'),('observed_at','Last checked')], 'NETALERTX')
 ])
 group('Shared Dependencies', [
-    card('n8n', 'Availability only · business workflows stay outside this dashboard', 'services/n8n', [('status','Service'),('observed_at','Last checked')], 'N8N'),
+    card('n8n', 'Shared automation service availability', 'services/n8n', [('status','Service'),('observed_at','Last checked')], 'N8N'),
     card('Vaultwarden', 'Personal credential service availability', 'services/vaultwarden', [('status','Service'),('observed_at','Last checked')], 'VAULTWARDEN'),
     card('Syncthing', 'Personal sync service availability; file contents are excluded', 'services/syncthing', [('status','Service'),('observed_at','Last checked')], 'SYNCTHING')
 ])
