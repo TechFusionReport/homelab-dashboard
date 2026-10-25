@@ -12,6 +12,8 @@ Initial Homepage scaffold. It is not deployed or connected to live systems yet. 
 
 Requires Python 3 and Docker Compose.
 
+`preview` is for development and verification; `main` is production. Changes reach main only through a preview-to-main pull request. See [release rules](docs/releases.md). The starter has no automatic deployment yet.
+
 ```sh
 python scripts/bootstrap.py
 # Edit .env locally with your service URLs and credentials.
