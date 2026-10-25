@@ -177,3 +177,34 @@ html, body { background: var(--lab-ink) !important; color: var(--lab-text); }
   .service-card, .service-card::after { transition: none !important; }
   .service-card:hover, .service-card:focus-within { transform: none !important; }
 }
+
+/* Display the approved Area J artwork without changing its pixels. */
+#widgets-wrap { align-items: center; gap: 1rem; }
+.information-widget-logo .resolved {
+  width: 240px;
+  height: 160px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-right: 0;
+}
+.information-widget-logo img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover;
+  transform: scale(1.55);
+}
+.information-widget-greeting {
+  color: var(--lab-tertiary) !important;
+  border: 1px solid color-mix(in srgb, var(--lab-tertiary) 35%, transparent);
+  border-radius: 5px;
+  padding: .25rem .6rem;
+}
+.information-widget-greeting * {
+  font: 600 .66rem ui-monospace, Consolas, monospace !important;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+@media (max-width: 640px) {
+  .information-widget-logo .resolved { width: 180px; height: 120px; }
+}

@@ -1,4 +1,4 @@
-# Homelab Dashboard
+# Area J Homelab
 
 A personal dashboard for home systems, media services, storage, and the shared infrastructure they depend on.
 

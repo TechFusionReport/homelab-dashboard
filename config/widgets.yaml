@@ -1,5 +1,7 @@
+- logo:
+    icon: /images/area-j-logo.png
 - greeting:
-    text: Homelab / Preview
+    text: Preview
 - datetime:
     text_size: md
     format:

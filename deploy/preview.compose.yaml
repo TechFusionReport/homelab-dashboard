@@ -11,6 +11,7 @@ services:
       PORT: "3080"
       HOSTNAME: "127.0.0.1"
     volumes:
+      - ../assets:/app/public/images:ro
       - ../local/preview-homepage:/app/config
     security_opt:
       - no-new-privileges:true
